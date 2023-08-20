@@ -19,7 +19,7 @@ if get_settings().ENVIRONMENT.is_prod:
         traces_sample_rate=1.0,
     )
     # app_config.update({"docs_url": None, "redoc_url": None, "openapi_url": None})
-    ALLOW_ORIGINS = ["https://unnamed-birth-tunes.vercel.app"]
+    ALLOW_ORIGINS = ["https://birth-tunes.vercel.app"]
 else:
     ALLOW_ORIGINS = get_settings().ALLOW_ORIGINS
 
