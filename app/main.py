@@ -1,34 +1,32 @@
-import datetime
+from typing import Any
 
-from fastapi import Depends, FastAPI, HTTPException
-from sqlalchemy.orm import Session
+import sentry_sdk
+from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
 
-from . import crud, schemas
-from .database import SessionLocal
+from .config import get_settings
+from .router import router as song_router
 
-app = FastAPI()
+app_config: dict[str, Any] = {"title": "Birth Tunes Backend"}
 
-
-# Dependency
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-@app.post(
-    "/music-charts/{music_chart_id}/song", response_model=schemas.FindSongResponse
-)
-def get_song(
-    music_chart_id: int, birthdate: datetime.date, db: Session = Depends(get_db)
-):
-    db_song = crud.get_song_by_birthdate_and_music_chart(
-        db=db,
-        birthdate=birthdate,
-        music_chart_id=music_chart_id,
+if get_settings().ENVIRONMENT.is_prod:
+    sentry_sdk.init(
+        dsn=get_settings().SENTRY_SDK_DSN,
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        # We recommend adjusting this value in production,
+        traces_sample_rate=1.0,
     )
-    if db_song is None:
-        raise HTTPException(status_code=404, detail="Song not found")
-    return db_song
+    app_config.update({"docs_url": None, "redoc_url": None, "openapi_url": None})
+
+app = FastAPI(**app_config)
+
+app.include_router(song_router, tags=["Song"])
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=get_settings().ALLOW_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
