@@ -9,7 +9,7 @@ from .database import get_db
 router = APIRouter()
 
 
-@router.post(
+@router.get(
     "/music-charts/{music_chart_id}/song",
     description="날짜로 노래 조회",
     response_model=schemas.FindSongResponse,
