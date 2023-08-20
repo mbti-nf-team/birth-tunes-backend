@@ -8,7 +8,7 @@ from app.constants import Environment
 class Settings(BaseSettings):
     ENVIRONMENT: Environment = Environment.LOCAL
     DEBUG: bool = True
-    ALLOW_ORIGINS: list[str] = ["http://localhost:3000"]
+    ALLOW_ORIGINS: list[str] = ["*"]
 
     DATABASE_URL: str = ""
 
