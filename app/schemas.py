@@ -25,9 +25,5 @@ class Song(BaseModel):
         from_attributes = True
 
 
-class GetSongResponseDeprecated(Song):
-    music_chart_id: int = Field(..., description="뮤직 차트 ID", example="1")
-
-
 class GetSongResponse(Song):
     music_chart: MusicChart = Field(..., description="뮤직 차트 정보")
