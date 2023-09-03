@@ -32,7 +32,7 @@ class Song(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     title = Column(String(200), nullable=False)
     artist = Column(String(100), nullable=False)
-    base_date = Column(Date, nullable=False, index=True)
+    base_date = Column(Date, nullable=False, index=True, unique=True)
     youtube_video_id = Column(String(100), nullable=True)
     music_chart_id = Column(Integer, ForeignKey("music_chart.id"), nullable=False)
     created_at = Column(DateTime, server_default=func.now(), nullable=False)
@@ -41,5 +41,3 @@ class Song(Base):
     )
 
     music_chart = relationship("MusicChart", back_populates="songs")
-
-    __table_args__ = (UniqueConstraint("base_date", "music_chart_id"),)
