@@ -12,7 +12,7 @@ class Settings(BaseSettings):
 
     DATABASE_URL: str = ""
 
-    SENTRY_SDK_DSN: str = ""
+    SENTRY_DSN: str = ""
 
     model_config = SettingsConfigDict(env_file=".env")
 

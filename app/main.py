@@ -12,7 +12,7 @@ app_config: dict[str, Any] = {"title": "Birth Tunes Backend"}
 
 if get_settings().ENVIRONMENT.is_prod:
     sentry_sdk.init(
-        dsn=get_settings().SENTRY_SDK_DSN,
+        dsn=get_settings().SENTRY_DSN,
         # Set traces_sample_rate to 1.0 to capture 100%
         # of transactions for performance monitoring.
         # We recommend adjusting this value in production,
