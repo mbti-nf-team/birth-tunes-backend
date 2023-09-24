@@ -1,8 +1,10 @@
 import datetime
-from fastapi import APIRouter, Depends, HTTPException, Path, Request, Header
+
+from fastapi import APIRouter, Depends, HTTPException, Path, Request
 from sqlalchemy.orm import Session
 
 from . import crud, schemas
+from .auth import get_api_key
 from .database import get_db
 
 router = APIRouter()
@@ -19,12 +21,8 @@ def get_song(
     month: int = Path(..., ge=1, le=12, title="조회할 월", example=5),
     day: int = Path(..., ge=1, le=31, title="조회할 일", example=3),
     db: Session = Depends(get_db),
+    api_key: str = Depends(get_api_key),
 ):
-    # 클라이언트 호스트 이름 가져오기
-    client = request.client
-    # 호스트 이름을 로그에 출력
-    print(f"Client: {client}")
-
     db_song = crud.get_song_by_date(
         db=db,
         date=datetime.date(year, month, day),

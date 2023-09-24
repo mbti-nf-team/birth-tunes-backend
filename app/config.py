@@ -14,6 +14,8 @@ class Settings(BaseSettings):
 
     SENTRY_DSN: str = ""
 
+    NFTEAM_API_TOKEN: str = ""
+
     model_config = SettingsConfigDict(env_file=".env")
 
 
