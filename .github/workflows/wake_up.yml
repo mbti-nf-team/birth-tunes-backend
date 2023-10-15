@@ -1,0 +1,13 @@
+name: Wake up periodically
+on:
+  schedule:
+    - cron: "0 0 * * 3"  # 매주 수요일 자정에 실행
+jobs:
+  send_request:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Send request
+        run: |
+          curl --request GET --url https://birth-tunes-backend.fly.dev/songs/1995/4/30 \
+            --header "nfteam-api-token: ${{ secrets.NFTEAM_API_TOKEN }}"
