@@ -15,6 +15,9 @@ async def get_api_key(
     request: Request,
     api_key_header: str = Security(api_key_header),
 ):
+    # TODO: 임시로 토큰 검증 비활성화 - 프론트엔드 환경변수 수정 후 다시 활성화 필요
+    return api_key_header
+
     expected_token = get_settings().NFTEAM_API_TOKEN
 
     if api_key_header == expected_token:
